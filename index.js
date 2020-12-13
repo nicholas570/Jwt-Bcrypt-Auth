@@ -1,8 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const bcrypt = require('bcrypt');
-
-const users = [];
+const api = require('./routes/api');
 
 const port = process.env.PORT || 8080;
 const corsOptions = {
@@ -19,40 +17,7 @@ app.use(
   })
 );
 
-app.get('/api/users', (req, res) => {
-  res.status(200).json(users);
-});
-
-app.post('/api/users', async (req, res) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-    const newUser = {
-      name: req.body.name,
-      password: hashedPassword,
-    };
-    users.push(newUser);
-    res.status(201).json(newUser);
-  } catch {
-    res.status(500).json({ message: 'Something went wrong adding a user' });
-  }
-});
-
-app.post('/api/auth/login', async (req, res) => {
-  const user = users.find((user) => user.name === req.body.name);
-  if (user == null) {
-    return res.status(400).send('Cannot find user');
-  }
-  try {
-    if (await bcrypt.compare(req.body.password, user.password)) {
-      res.status(200).json({ message: 'Successfully logged in' });
-    } else {
-      res.status(200).json({ message: 'Oops' });
-    }
-  } catch {
-    res.status(200).json({ message: 'Error' });
-  }
-});
+app.use('/api', api);
 
 app.listen(port, (err) => {
   if (err) {
