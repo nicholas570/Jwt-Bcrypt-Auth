@@ -3,13 +3,10 @@ const cors = require('cors');
 const api = require('./routes/api');
 
 const port = process.env.PORT || 5001;
-const corsOptions = {
-  origin: 'http://localhost:5001',
-};
 
 const app = express();
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(
   express.urlencoded({

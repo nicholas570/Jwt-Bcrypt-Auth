@@ -31,10 +31,11 @@ function App() {
       axios
         .post('http://localhost:5001/api/auth/register', { ...state })
         .then(({ data }) => {
-          setResult(data);
+          console.log(data);
+          setResult(data.message);
         })
         .catch((err) => {
-          setResult(err.response);
+          setResult(err.response.data.message);
         });
 
       setState({
@@ -45,7 +46,6 @@ function App() {
       });
     }
     setValidated(true);
-    console.log('ok');
   };
 
   return (
@@ -99,7 +99,7 @@ function App() {
               </Form.Group>
 
               <Button variant='primary' type='submit'>
-                Submit
+                Register
               </Button>
             </Form>
             <p>{result && result}</p>
