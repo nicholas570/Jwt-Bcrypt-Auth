@@ -10,8 +10,10 @@ router.post('/register', (req, res) => {
   return connection.query(sql, data, (err, results) => {
     if (err) {
       return res.status(500).json({
+        success: false,
+        message: 'Something went wrong',
+        data: {},
         error: err.message,
-        sql: err.sql,
       });
     }
     return connection.query(
@@ -20,12 +22,19 @@ router.post('/register', (req, res) => {
       (err2, records) => {
         if (err2) {
           return res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            data: {},
             error: err2.message,
-            sql: err2.sql,
           });
         }
         const newUser = records[0];
-        return res.status(201).json(newUser);
+        return res.status(201).json({
+          success: true,
+          message: 'Successfully registered',
+          data: newUser,
+          error: '',
+        });
       }
     );
   });
