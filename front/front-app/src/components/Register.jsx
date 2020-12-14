@@ -5,7 +5,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap/';
 
 function Register() {
   const [validated, setValidated] = useState(false);
-  const [result, setResult] = useState();
+  const [result, setResult] = useState({ message: '', error: '' });
   const [state, setState] = useState({
     firstName: '',
     lastName: '',
@@ -26,14 +26,26 @@ function Register() {
     e.preventDefault();
     const form = e.currentTarget;
     if (form.checkValidity()) {
+      setValidated(true);
+
       axios
         .post('http://localhost:5001/api/auth/register', { ...state })
         .then(({ data }) => {
           console.log(data);
-          setResult(data.message);
+          setResult({ ...result, message: data.message });
         })
         .catch((err) => {
-          setResult(err.response.data.message);
+          if (err.response === undefined) {
+            setResult({
+              message: 'Something went wrong',
+              error: '',
+            });
+          } else {
+            setResult({
+              message: err.response.data.message,
+              error: err.response.data.error,
+            });
+          }
         });
 
       setState({
@@ -43,7 +55,6 @@ function Register() {
         password: '',
       });
     }
-    setValidated(true);
   };
 
   return (
@@ -58,6 +69,7 @@ function Register() {
                 placeholder='Enter first name'
                 name='firstName'
                 onChange={handleChange}
+                value={state.firstName}
                 required
               />
             </Form.Group>
@@ -69,6 +81,7 @@ function Register() {
                 placeholder='Enter last name'
                 name='lastName'
                 onChange={handleChange}
+                value={state.lastName}
                 required
               />
             </Form.Group>
@@ -80,6 +93,7 @@ function Register() {
                 placeholder='Enter email'
                 name='email'
                 onChange={handleChange}
+                value={state.email}
                 required
               />
             </Form.Group>
@@ -88,9 +102,10 @@ function Register() {
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type='password'
-                placeholder='Password'
+                placeholder='5 caractères mininum dont 1 chiffre'
                 name='password'
                 onChange={handleChange}
+                value={state.password}
                 required
               />
             </Form.Group>
@@ -99,7 +114,12 @@ function Register() {
               Register
             </Button>
           </Form>
-          <p>{result && result}</p>
+          {result && (
+            <>
+              <p>{result.message}</p>
+              <p>{result.error}</p>
+            </>
+          )}
         </Col>
       </Row>
     </Container>
