@@ -1,13 +1,11 @@
-require('dotenv').config();
-const connection = require('../database/conf');
+const UserModel = require('../models/user');
 
 const AuthController = {};
 
-AuthController.register = (req, res) => {
-  const data = req.body;
-  const sql = 'INSERT INTO user SET ?';
+AuthController.register = async (req, res) => {
+  const user = req.body;
 
-  return connection.query(sql, data, (err, results) => {
+  await UserModel.create(user, (err, result) => {
     if (err) {
       return res.status(500).json({
         success: false,
@@ -16,27 +14,24 @@ AuthController.register = (req, res) => {
         error: err.message,
       });
     }
-    return connection.query(
-      'SELECT * FROM user WHERE id = ?',
-      results.insertId,
-      (err2, records) => {
-        if (err2) {
-          return res.status(500).json({
-            success: false,
-            message: 'Something went wrong',
-            data: {},
-            error: err2.message,
-          });
-        }
-        const newUser = records[0];
-        return res.status(201).json({
-          success: true,
-          message: 'Successfully registered',
-          data: newUser,
-          error: '',
+
+    return UserModel.getOne(result.insertId, (err2, records) => {
+      if (err2) {
+        return res.status(500).json({
+          success: false,
+          message: 'Something went wrong',
+          data: {},
+          error: err2.message,
         });
       }
-    );
+      const newUser = records[0];
+      return res.status(201).json({
+        success: true,
+        message: '',
+        data: newUser,
+        error: '',
+      });
+    });
   });
 };
 
