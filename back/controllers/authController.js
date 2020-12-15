@@ -27,7 +27,7 @@ AuthController.register = async (req, res) => {
       const newUser = records[0];
       return res.status(201).json({
         success: true,
-        message: '',
+        message: 'Succesfully registered',
         data: newUser,
         error: '',
       });

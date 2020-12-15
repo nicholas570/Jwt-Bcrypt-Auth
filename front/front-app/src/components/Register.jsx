@@ -32,7 +32,7 @@ function Register() {
         .post('http://localhost:5001/api/auth/register', { ...state })
         .then(({ data }) => {
           console.log(data);
-          setResult({ ...result, message: data.message });
+          setResult({ error: data.error, message: data.message });
         })
         .catch((err) => {
           if (err.response === undefined) {
@@ -54,6 +54,7 @@ function Register() {
         email: '',
         password: '',
       });
+      setValidated(false);
     }
   };
 
