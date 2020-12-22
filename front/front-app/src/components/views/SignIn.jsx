@@ -1,17 +1,14 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 import { Container, Row, Col, Form, Button } from 'react-bootstrap/';
 
-function Register() {
+import style from '../../css/Register.module.css';
+
+function SignIn() {
+  const [state, setState] = useState({ email: '', password: '' });
   const [validated, setValidated] = useState(false);
   const [result, setResult] = useState({ message: '', error: '' });
-  const [state, setState] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-  });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -29,7 +26,7 @@ function Register() {
       setValidated(true);
 
       axios
-        .post('http://localhost:5001/api/auth/register', { ...state })
+        .post('http://localhost:5001/api/auth/signIn', { ...state })
         .then(({ data }) => {
           console.log(data);
           setResult({ error: data.error, message: data.message });
@@ -49,8 +46,6 @@ function Register() {
         });
 
       setState({
-        firstName: '',
-        lastName: '',
         email: '',
         password: '',
       });
@@ -59,39 +54,15 @@ function Register() {
   };
 
   return (
-    <Container>
-      <Row className='d-flex justify-content-center'>
-        <Col md={8}>
+    <Container fluid className={style.container}>
+      <Row className='m-3'>
+        <Col>
           <Form onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.Label>First name</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter first name'
-                name='firstName'
-                onChange={handleChange}
-                value={state.firstName}
-                required
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Last name</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter last name'
-                name='lastName'
-                onChange={handleChange}
-                value={state.lastName}
-                required
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Email address</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control
                 type='email'
-                placeholder='Enter email'
+                placeholder='Email'
                 name='email'
                 onChange={handleChange}
                 value={state.email}
@@ -103,7 +74,7 @@ function Register() {
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type='password'
-                placeholder='5 caractères mininum dont 1 chiffre'
+                placeholder='Password'
                 name='password'
                 onChange={handleChange}
                 value={state.password}
@@ -111,8 +82,8 @@ function Register() {
               />
             </Form.Group>
 
-            <Button variant='primary' type='submit'>
-              Register
+            <Button variant='outline-primary' type='submit'>
+              Sign in
             </Button>
           </Form>
           {result && (
@@ -127,4 +98,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default SignIn;
