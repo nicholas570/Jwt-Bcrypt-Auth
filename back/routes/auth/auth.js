@@ -1,12 +1,16 @@
 const express = require('express');
 const AuthController = require('../../controllers/authController');
-const authMiddleware = require('../../middlewares/auth/authMiddleware');
+const {
+  validateRegistrationDatas,
+  hashPassword,
+} = require('../../middlewares/auth/authMiddlewares');
 
 const router = express.Router();
 
 router.post(
   '/register',
-  [authMiddleware.validateRegistrationDatas],
+  validateRegistrationDatas,
+  hashPassword,
   AuthController.register
 );
 
