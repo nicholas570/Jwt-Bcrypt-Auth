@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import { Container, Row, Col, Form, Button } from 'react-bootstrap/';
 
 import style from '../../css/Register.module.css';
 
-function SignIn() {
+function Login() {
   const [state, setState] = useState({ email: '', password: '' });
   const [validated, setValidated] = useState(false);
   const [result, setResult] = useState({ message: '', error: '' });
+  const history = useHistory();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -26,10 +28,13 @@ function SignIn() {
       setValidated(true);
 
       axios
-        .post('http://localhost:5001/api/auth/signIn', { ...state })
+        .post('http://localhost:5001/api/auth/login', { ...state })
         .then(({ data }) => {
           console.log(data);
           setResult({ error: data.error, message: data.message });
+          setTimeout(() => {
+            history.push('/home');
+          }, 1000);
         })
         .catch((err) => {
           if (err.response === undefined) {
@@ -83,7 +88,7 @@ function SignIn() {
             </Form.Group>
 
             <Button variant='outline-primary' type='submit'>
-              Sign in
+              Login
             </Button>
           </Form>
           {result && (
@@ -98,4 +103,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default Login;

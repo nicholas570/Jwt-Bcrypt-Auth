@@ -21,7 +21,7 @@ function Auth() {
         <Col>
           <Link to='/signin'>
             <Button variant='outline-primary' size='lg'>
-              Sign in
+              Login
             </Button>
           </Link>
         </Col>
