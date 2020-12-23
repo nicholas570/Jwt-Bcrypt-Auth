@@ -6,8 +6,10 @@ PostController.findAllPosts = async (req, res) => {
   await PostModel.getAll(req.user.email, (err, results) => {
     if (err) {
       res.status(500).json({
+        success: false,
+        message: 'Something went wrong',
         error: err.message,
-        sql: err.sql,
+        data: {},
       });
     }
     res.status(200).json({
