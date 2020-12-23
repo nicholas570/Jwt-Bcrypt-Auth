@@ -37,7 +37,7 @@ function Register() {
       setValidated(true);
 
       axiosInstance(history)
-        .post('http://localhost:5001/api/auth/register', { ...state })
+        .post('api/auth/register', { ...state })
         .then(({ data }) => {
           console.log(data);
           setResult({ error: data.error, message: data.message });

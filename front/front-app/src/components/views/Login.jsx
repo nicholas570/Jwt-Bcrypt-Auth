@@ -33,7 +33,7 @@ function Login() {
       setValidated(true);
 
       axiosInstance(history)
-        .post('http://localhost:5001/api/auth/login', { ...state })
+        .post('api/auth/login', { ...state })
         .then(({ data }) => {
           console.log(data);
           setResult({ error: data.error, message: data.message });

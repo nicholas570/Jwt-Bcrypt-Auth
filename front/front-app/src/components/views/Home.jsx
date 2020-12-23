@@ -12,7 +12,7 @@ function Home() {
 
   useEffect(() => {
     axiosInstance(history)
-      .get('http://localhost:5001/api/posts')
+      .get('api/posts')
       .then(({ data }) => {
         setPosts(data.data);
       })

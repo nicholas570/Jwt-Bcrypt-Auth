@@ -1,14 +1,16 @@
 import axios from 'axios';
 
 const axiosInstance = (history = null) => {
+  const baseURL = process.env.REACT_APP_BACKEND_URL;
+
   let headers = {};
 
   if (localStorage.Token) {
     headers.Authorization = `Bearer ${localStorage.Token}`;
   }
-  console.log(localStorage.Token);
 
   const axiosInstance = axios.create({
+    baseURL,
     headers,
   });
 
