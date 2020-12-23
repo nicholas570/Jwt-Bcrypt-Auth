@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+
+import { userContext } from '../../context/userProvider';
 
 import { Container, Row, Col, Form, Button } from 'react-bootstrap/';
 
@@ -10,6 +12,8 @@ function Login() {
   const [state, setState] = useState({ email: '', password: '' });
   const [validated, setValidated] = useState(false);
   const [result, setResult] = useState({ message: '', error: '' });
+  const { setUserData } = useContext(userContext);
+
   const history = useHistory();
 
   const handleChange = (event) => {
@@ -32,8 +36,14 @@ function Login() {
         .then(({ data }) => {
           console.log(data);
           setResult({ error: data.error, message: data.message });
+          setUserData({
+            user: data.data,
+            token: data.token,
+            refreshToken: data.refreshToken,
+          });
           localStorage.setItem('Token', data.token);
           localStorage.setItem('RefreshToken', data.refreshToken);
+          localStorage.setItem('User', JSON.stringify(data.data));
           setTimeout(() => {
             history.push('/home');
           });
