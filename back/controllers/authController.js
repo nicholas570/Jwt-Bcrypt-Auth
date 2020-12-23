@@ -1,10 +1,13 @@
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const UserModel = require('../models/user');
+const signToken = require('../utils/signToken');
 
 const AuthController = {};
 
 AuthController.register = async (req, res) => {
   const user = req.body;
+  const token = signToken(user, process.env.ACCESS_TOKEN_SECRET);
 
   await UserModel.create(user, (err, result) => {
     if (err) {
@@ -31,6 +34,7 @@ AuthController.register = async (req, res) => {
         message: 'Succesfully registered',
         data: newUser,
         error: '',
+        token,
       });
     });
   });
@@ -38,6 +42,7 @@ AuthController.register = async (req, res) => {
 
 AuthController.login = async (req, res) => {
   const { email } = req.body;
+  const token = signToken(req.body, process.env.ACCESS_TOKEN_SECRET);
 
   await UserModel.getOneWithHash(email, async (err, result) => {
     if (err) {
@@ -60,8 +65,9 @@ AuthController.login = async (req, res) => {
       return res.status(200).json({
         success: true,
         message: 'Succesfully authenticated',
-        data: result,
+        data: result[0],
         error: '',
+        token,
       });
     }
     return res.status(401).json({
