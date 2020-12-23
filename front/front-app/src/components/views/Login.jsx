@@ -32,9 +32,10 @@ function Login() {
         .then(({ data }) => {
           console.log(data);
           setResult({ error: data.error, message: data.message });
+          localStorage.setItem('Token', data.token);
           setTimeout(() => {
             history.push('/home');
-          }, 1000);
+          });
         })
         .catch((err) => {
           if (err.response === undefined) {

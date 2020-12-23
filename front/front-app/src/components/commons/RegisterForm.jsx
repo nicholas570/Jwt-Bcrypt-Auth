@@ -33,6 +33,7 @@ function Register() {
         .then(({ data }) => {
           console.log(data);
           setResult({ error: data.error, message: data.message });
+          localStorage.setItem('Token', data.token);
         })
         .catch((err) => {
           if (err.response === undefined) {
