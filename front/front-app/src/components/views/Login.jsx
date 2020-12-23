@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+
+import axiosInstance from '../../axios/axiosInstance';
 
 import { userContext } from '../../context/userProvider';
 
@@ -31,7 +32,7 @@ function Login() {
     if (form.checkValidity()) {
       setValidated(true);
 
-      axios
+      axiosInstance(history)
         .post('http://localhost:5001/api/auth/login', { ...state })
         .then(({ data }) => {
           console.log(data);

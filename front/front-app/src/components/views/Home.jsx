@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
-import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import axiosInstance from '../../axios/axiosInstance';
 
 import { userContext } from '../../context/userProvider';
 
@@ -7,24 +8,23 @@ function Home() {
   const [posts, setPosts] = useState();
   const [result, setResult] = useState({ message: '', error: '' });
   const { userData } = useContext(userContext);
+  const history = useHistory();
 
   useEffect(() => {
-    axios
-      .get('http://localhost:5001/api/posts', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('Token')}`,
-        },
-      })
+    axiosInstance(history)
+      .get('http://localhost:5001/api/posts')
       .then(({ data }) => {
         setPosts(data.data);
       })
       .catch((err) => {
-        setResult({
-          message: err.response.data,
-          error: err.response.status,
-        });
+        if (err.response) {
+          setResult({
+            message: err.response.data,
+            error: err.response.status,
+          });
+        }
       });
-  }, []);
+  }, [history]);
 
   return (
     <div>

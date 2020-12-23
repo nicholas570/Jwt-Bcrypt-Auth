@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+
+import axiosInstance from '../../axios/axiosInstance';
 
 import { userContext } from '../../context/userProvider';
 
@@ -17,6 +19,7 @@ function Register() {
     password: '',
   });
   const { setUserData } = useContext(userContext);
+  const history = useHistory();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -33,7 +36,7 @@ function Register() {
     if (form.checkValidity()) {
       setValidated(true);
 
-      axios
+      axiosInstance(history)
         .post('http://localhost:5001/api/auth/register', { ...state })
         .then(({ data }) => {
           console.log(data);
