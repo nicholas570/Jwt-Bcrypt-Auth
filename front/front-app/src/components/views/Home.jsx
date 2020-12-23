@@ -8,11 +8,10 @@ function Home() {
     axios
       .get('http://localhost:5001/api/posts', {
         headers: {
-          Authorization: localStorage.getItem('Token'),
+          Authorization: `Bearer ${localStorage.getItem('Token')}`,
         },
       })
       .then(({ data }) => {
-        console.log(data);
         setPosts(data.data);
       })
       .catch((err) => console.log(err));
