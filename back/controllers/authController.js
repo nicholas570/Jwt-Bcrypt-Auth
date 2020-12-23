@@ -1,13 +1,18 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const UserModel = require('../models/user');
-const signToken = require('../utils/signToken');
+const { generateToken, generateRefreshToken } = require('../utils/signToken');
 
 const AuthController = {};
 
 AuthController.register = async (req, res) => {
   const user = req.body;
-  const token = signToken(user, process.env.ACCESS_TOKEN_SECRET);
+  const token = generateToken(user, process.env.ACCESS_TOKEN_SECRET);
+  const refreshToken = generateRefreshToken(
+    user,
+    process.env.REFRESH_TOKEN_SECRET
+  );
 
   await UserModel.create(user, (err, result) => {
     if (err) {
@@ -35,6 +40,7 @@ AuthController.register = async (req, res) => {
         data: newUser,
         error: '',
         token,
+        refreshToken,
       });
     });
   });
@@ -42,7 +48,11 @@ AuthController.register = async (req, res) => {
 
 AuthController.login = async (req, res) => {
   const { email } = req.body;
-  const token = signToken(req.body, process.env.ACCESS_TOKEN_SECRET);
+  const token = generateToken(req.body, process.env.ACCESS_TOKEN_SECRET);
+  const refreshToken = generateRefreshToken(
+    req.body,
+    process.env.REFRESH_TOKEN_SECRET
+  );
 
   await UserModel.getOneWithHash(email, async (err, result) => {
     if (err) {
@@ -68,6 +78,7 @@ AuthController.login = async (req, res) => {
         data: result[0],
         error: '',
         token,
+        refreshToken,
       });
     }
     return res.status(401).json({

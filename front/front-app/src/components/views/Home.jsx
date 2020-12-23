@@ -7,12 +7,15 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5001/api/posts')
+      .get('http://localhost:5001/api/posts', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('Token')}`,
+        },
+      })
       .then(({ data }) => {
         setPosts(data.data);
       })
       .catch((err) => {
-        console.log(err.response);
         setResult({
           message: err.response.data,
           error: err.response.status,

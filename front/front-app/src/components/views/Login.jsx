@@ -33,6 +33,7 @@ function Login() {
           console.log(data);
           setResult({ error: data.error, message: data.message });
           localStorage.setItem('Token', data.token);
+          localStorage.setItem('RefreshToken', data.refreshToken);
           setTimeout(() => {
             history.push('/home');
           });
