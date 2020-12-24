@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 import axiosInstance from '../../axios/axiosInstance';
 
 import { userContext } from '../../context/userProvider';
 
 import { Container, Row, Col, Form, Button } from 'react-bootstrap/';
+import { ArrowLeft } from 'react-bootstrap-icons';
 
 import style from '../../css/Register.module.css';
 
@@ -26,16 +27,15 @@ function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     if (form.checkValidity()) {
       setValidated(true);
 
-      axiosInstance(history)
+      await axiosInstance(history)
         .post('api/auth/login', { ...state })
         .then(({ data }) => {
-          console.log(data);
           setResult({ error: data.error, message: data.message });
           setUserData({
             user: data.data,
@@ -43,11 +43,10 @@ function Login() {
             refreshToken: data.refreshToken,
           });
           localStorage.setItem('Token', data.token);
-          localStorage.setItem('RefreshToken', data.refreshToken);
           localStorage.setItem('User', JSON.stringify(data.data));
           setTimeout(() => {
             history.push('/home');
-          });
+          }, 1000);
         })
         .catch((err) => {
           if (err.response === undefined) {
@@ -75,6 +74,9 @@ function Login() {
     <Container fluid className={style.container}>
       <Row className='m-3'>
         <Col>
+          <Link to='/'>
+            <ArrowLeft />
+          </Link>
           <Form onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Label>Email</Form.Label>

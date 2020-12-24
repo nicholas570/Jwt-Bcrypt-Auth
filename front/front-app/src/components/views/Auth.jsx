@@ -19,7 +19,7 @@ function Auth() {
       </Row>
       <Row className='m-3'>
         <Col>
-          <Link to='/signin'>
+          <Link to='/login'>
             <Button variant='outline-primary' size='lg'>
               Login
             </Button>

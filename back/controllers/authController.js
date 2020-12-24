@@ -1,5 +1,6 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const UserModel = require('../models/user');
 const { generateToken, generateRefreshToken } = require('../utils/signToken');
 
@@ -86,6 +87,22 @@ AuthController.login = async (req, res) => {
       data: {},
       error: err,
     });
+  });
+};
+
+AuthController.authenticateToken = async (req, res) => {
+  const { token } = req.body;
+
+  if (token === null) {
+    res.sendStatus(401);
+  }
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json(false);
+    }
+
+    return res.status(200).json(true);
   });
 };
 

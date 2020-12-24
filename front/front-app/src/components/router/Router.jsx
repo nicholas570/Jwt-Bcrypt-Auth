@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
+import PrivateRoute from './PrivateRoute';
 import Auth from '../views/Auth';
 import Home from '../views/Home';
 import Register from '../views/Register';
@@ -12,8 +13,8 @@ function Router() {
       <Switch>
         <Route exact path='/' component={Auth} />
         <Route path='/register' component={Register} />
-        <Route path='/signin' component={Login} />
-        <Route path='/home' component={Home} />
+        <Route path='/login' component={Login} />
+        <PrivateRoute path='/home' component={Home} />
       </Switch>
     </BrowserRouter>
   );

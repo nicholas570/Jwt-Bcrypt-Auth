@@ -18,13 +18,14 @@ function Home() {
       })
       .catch((err) => {
         if (err.response) {
+          console.log(err.response);
           setResult({
             message: err.response.data,
             error: err.response.status,
           });
         }
       });
-  }, [history]);
+  }, []);
 
   return (
     <div>

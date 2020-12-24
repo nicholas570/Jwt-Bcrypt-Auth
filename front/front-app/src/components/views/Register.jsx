@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 import axiosInstance from '../../axios/axiosInstance';
 
-import { userContext } from '../../context/userProvider';
-
 import { Container, Row, Col, Form, Button } from 'react-bootstrap/';
+import { ArrowLeft } from 'react-bootstrap-icons';
+
+import { userContext } from '../../context/userProvider';
 
 import style from '../../css/Register.module.css';
 
@@ -47,7 +48,6 @@ function Register() {
             refreshToken: data.refreshToken,
           });
           localStorage.setItem('Token', data.token);
-          localStorage.setItem('RefreshToken', data.refreshToken);
           localStorage.setItem('User', JSON.stringify(data.data));
         })
         .catch((err) => {
@@ -78,6 +78,9 @@ function Register() {
       <Container>
         <Row className='d-flex justify-content-center'>
           <Col md={8}>
+            <Link to='/'>
+              <ArrowLeft />
+            </Link>
             <Form onSubmit={handleSubmit}>
               <Form.Group>
                 <Form.Label>First name</Form.Label>
