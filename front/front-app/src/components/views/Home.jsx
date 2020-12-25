@@ -39,7 +39,7 @@ function Home() {
           <p>{result.error}</p>
         </>
       )}
-      {posts ? (
+      {posts && posts.length > 0 ? (
         posts.map((post) => {
           return (
             <Jumbotron key={post.id} className='col-md-5'>

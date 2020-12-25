@@ -49,6 +49,7 @@ function Register() {
           });
           localStorage.setItem('Token', data.token);
           localStorage.setItem('User', JSON.stringify(data.data));
+          history.push('/home');
         })
         .catch((err) => {
           if (err.response === undefined) {
