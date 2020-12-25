@@ -3,7 +3,6 @@ const AuthController = require('../../controllers/authController');
 const {
   validateRegistrationDatas,
   hashPassword,
-  authenticateToken,
 } = require('../../middlewares/auth/authMiddlewares');
 
 const router = express.Router();

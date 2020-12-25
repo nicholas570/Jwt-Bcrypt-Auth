@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import axiosInstance from '../../axios/axiosInstance';
 
+import { Jumbotron, Container, Row, Col } from 'react-bootstrap';
+
 import { userContext } from '../../context/userProvider';
 
 function Home() {
@@ -37,10 +39,23 @@ function Home() {
           <p>{result.error}</p>
         </>
       )}
-      {posts &&
+      {posts ? (
         posts.map((post) => {
-          return <p key={post.id}>{post.content}</p>;
-        })}
+          return (
+            <Jumbotron key={post.id} className='col-md-5'>
+              <Container>
+                <Row>
+                  <Col>
+                    <p>{post.content}</p>
+                  </Col>
+                </Row>
+              </Container>
+            </Jumbotron>
+          );
+        })
+      ) : (
+        <h2>No post yet :)</h2>
+      )}
     </div>
   );
 }

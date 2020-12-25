@@ -4,7 +4,7 @@ import axiosInstance from '../../axios/axiosInstance';
 
 import { userContext } from '../../context/userProvider';
 
-function PrivateRoute({ component: Component, ...rest }) {
+function PrivateRoute({ component: Component, layout: Layout, ...rest }) {
   const { userData } = useContext(userContext);
   const [isValid, setIsValid] = useState();
   const history = useHistory();
@@ -24,7 +24,13 @@ function PrivateRoute({ component: Component, ...rest }) {
         <Route
           {...rest}
           render={(props) =>
-            isValid === true ? <Component {...props} /> : <Redirect to='/' />
+            isValid === true ? (
+              <Layout {...props}>
+                <Component {...props} />
+              </Layout>
+            ) : (
+              <Redirect to='/' />
+            )
           }
         />
       )}

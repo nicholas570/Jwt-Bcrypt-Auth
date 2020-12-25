@@ -90,7 +90,7 @@ AuthController.login = async (req, res) => {
   });
 };
 
-AuthController.authenticateToken = async (req, res) => {
+AuthController.authenticateToken = (req, res) => {
   const { token } = req.body;
 
   if (token === null) {
