@@ -8,7 +8,7 @@ import accessPrivateRoutesService from '../services/accessPrivateRoutes';
 export const authContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(localStorage.getItem('Token') || null);
 
   const register = (history, state, setToken, setResult, setUserData) =>
     registerService(history, state, setToken, setResult, setUserData);
