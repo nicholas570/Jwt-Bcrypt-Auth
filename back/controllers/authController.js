@@ -98,9 +98,9 @@ AuthController.authenticateToken = (req, res) => {
     res.sendStatus(401);
   }
 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
     if (err) {
-      return res.status(403).json(false);
+      return res.status(403).json(err);
     }
 
     return res.status(200).json(true);

@@ -7,10 +7,9 @@ const register = (history, state, setToken, setResult, setUserData) => {
       setResult({ error: data.error, message: data.message });
       setUserData({
         user: data.data,
-        token: data.token,
-        refreshToken: data.refreshToken,
       });
       localStorage.setItem('Token', data.token);
+      localStorage.setItem('RefreshToken', data.refreshToken);
       setToken(data.token);
       localStorage.setItem('User', JSON.stringify(data.data));
       history.push('/home');

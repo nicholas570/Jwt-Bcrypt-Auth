@@ -27,6 +27,9 @@ const axiosInstance = (history = null) => {
       }
 
       if (error.response.status === 403) {
+        if (error.response.data.message === 'jwt expired') {
+          console.log('expired');
+        }
         localStorage.removeItem('Token');
         localStorage.removeItem('User');
         history.push('/');
