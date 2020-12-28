@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import refreshToken from '../services/refreshToken';
+
 const axiosInstance = (history = null) => {
   const baseURL = process.env.REACT_APP_BACKEND_URL;
 
@@ -29,6 +31,7 @@ const axiosInstance = (history = null) => {
       if (error.response.status === 403) {
         if (error.response.data.message === 'jwt expired') {
           console.log('expired');
+          refreshToken(localStorage.getItem('RefreshToken'));
         }
         localStorage.removeItem('Token');
         localStorage.removeItem('User');
