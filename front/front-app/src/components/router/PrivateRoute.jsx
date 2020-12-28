@@ -4,13 +4,14 @@ import { Route, Redirect, useHistory } from 'react-router-dom';
 import { authContext } from '../../context/AuthProvider';
 
 function PrivateRoute({ component: Component, layout: Layout, ...rest }) {
-  const { accessPrivateRoutes, token } = useContext(authContext);
+  const { accessPrivateRoutes, token, setToken } = useContext(authContext);
   const [isValid, setIsValid] = useState();
   const history = useHistory();
 
   useEffect(() => {
     accessPrivateRoutes(history, token, setIsValid);
-  }, []);
+    setToken(localStorage.getItem('Token'));
+  }, [token]);
 
   return (
     <>
