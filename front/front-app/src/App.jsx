@@ -1,11 +1,14 @@
 import Router from './components/router/Router';
-import { UserProvider } from './context/userProvider';
+import { AuthProvider } from './context/AuthProvider';
+import { UserProvider } from './context/UserProvider';
 
 function App() {
   return (
-    <UserProvider>
-      <Router />
-    </UserProvider>
+    <AuthProvider>
+      <UserProvider>
+        <Router />
+      </UserProvider>
+    </AuthProvider>
   );
 }
 

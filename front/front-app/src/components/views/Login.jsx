@@ -1,9 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 
-import axiosInstance from '../../axios/axiosInstance';
-
-import { userContext } from '../../context/userProvider';
+import { userContext } from '../../context/UserProvider';
+import { authContext } from '../../context/AuthProvider';
 
 import { Container, Row, Col, Form, Button } from 'react-bootstrap/';
 import { ArrowLeft } from 'react-bootstrap-icons';
@@ -15,7 +14,7 @@ function Login() {
   const [validated, setValidated] = useState(false);
   const [result, setResult] = useState({ message: '', error: '' });
   const { setUserData } = useContext(userContext);
-
+  const { login } = useContext(authContext);
   const history = useHistory();
 
   const handleChange = (event) => {
@@ -33,34 +32,7 @@ function Login() {
     if (form.checkValidity()) {
       setValidated(true);
 
-      await axiosInstance(history)
-        .post('api/auth/login', { ...state })
-        .then(({ data }) => {
-          setResult({ error: data.error, message: data.message });
-          setUserData({
-            user: data.data,
-            token: data.token,
-            refreshToken: data.refreshToken,
-          });
-          localStorage.setItem('Token', data.token);
-          localStorage.setItem('User', JSON.stringify(data.data));
-          setTimeout(() => {
-            history.push('/home');
-          }, 1000);
-        })
-        .catch((err) => {
-          if (err.response === undefined) {
-            setResult({
-              message: 'Something went wrong',
-              error: '',
-            });
-          } else {
-            setResult({
-              message: err.response.data.message,
-              error: err.response.data.error,
-            });
-          }
-        });
+      await login(history, state, setResult, setUserData);
 
       setState({
         email: '',

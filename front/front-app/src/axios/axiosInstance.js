@@ -28,7 +28,6 @@ const axiosInstance = (history = null) => {
 
       if (error.response.status === 403) {
         localStorage.removeItem('Token');
-        localStorage.removeItem('RefreshToken');
         localStorage.removeItem('User');
         history.push('/');
       } else {

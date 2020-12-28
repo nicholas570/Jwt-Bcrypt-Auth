@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
 import axiosInstance from '../../axios/axiosInstance';
 
-import { userContext } from '../../context/userProvider';
+import { userContext } from '../../context/UserProvider';
 
 function PrivateRoute({ component: Component, layout: Layout, ...rest }) {
   const { userData } = useContext(userContext);

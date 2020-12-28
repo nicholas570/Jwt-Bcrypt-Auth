@@ -4,7 +4,7 @@ import axiosInstance from '../../axios/axiosInstance';
 
 import { Jumbotron, Container, Row, Col } from 'react-bootstrap';
 
-import { userContext } from '../../context/userProvider';
+import { userContext } from '../../context/UserProvider';
 
 function Home() {
   const [posts, setPosts] = useState();

@@ -6,7 +6,7 @@ import axiosInstance from '../../axios/axiosInstance';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap/';
 import { ArrowLeft } from 'react-bootstrap-icons';
 
-import { userContext } from '../../context/userProvider';
+import { userContext } from '../../context/UserProvider';
 
 import style from '../../css/Register.module.css';
 
