@@ -14,7 +14,7 @@ function Login() {
   const [validated, setValidated] = useState(false);
   const [result, setResult] = useState({ message: '', error: '' });
   const { setUserData } = useContext(userContext);
-  const { login } = useContext(authContext);
+  const { login, setToken } = useContext(authContext);
   const history = useHistory();
 
   const handleChange = (event) => {
@@ -32,7 +32,7 @@ function Login() {
     if (form.checkValidity()) {
       setValidated(true);
 
-      await login(history, state, setResult, setUserData);
+      await login(history, state, setToken, setResult, setUserData);
 
       setState({
         email: '',

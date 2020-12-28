@@ -19,7 +19,7 @@ function Register() {
     password: '',
   });
   const { setUserData } = useContext(userContext);
-  const { register } = useContext(authContext);
+  const { register, setToken } = useContext(authContext);
   const history = useHistory();
 
   const handleChange = (event) => {
@@ -37,7 +37,7 @@ function Register() {
     if (form.checkValidity()) {
       setValidated(true);
 
-      await register(history, state, setResult, setUserData);
+      await register(history, state, setToken, setResult, setUserData);
 
       setState({
         firstName: '',

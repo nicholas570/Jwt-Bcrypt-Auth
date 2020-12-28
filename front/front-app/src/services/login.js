@@ -1,17 +1,16 @@
 import axiosInstance from '../axios/axiosInstance';
 
-const login = (history, state, setResult, setUserData) => {
+const login = (history, state, setToken, setResult, setUserData) => {
   return axiosInstance(history)
     .post('api/auth/login', { ...state })
     .then(({ data }) => {
       setResult({ error: data.error, message: data.message });
       setUserData({
         user: data.data,
-        token: data.token,
-        refreshToken: data.refreshToken,
       });
       localStorage.setItem('Token', data.token);
       localStorage.setItem('User', JSON.stringify(data.data));
+      setToken(localStorage.getItem('Token'));
       setTimeout(() => {
         history.push('/home');
       }, 1000);

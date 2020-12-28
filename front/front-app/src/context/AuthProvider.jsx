@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React, { createContext, useState } from 'react';
 
 import registerService from '../services/register';
 import loginService from '../services/login';
@@ -8,22 +8,22 @@ import accessPrivateRoutesService from '../services/accessPrivateRoutes';
 export const authContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const token = localStorage.getItem('Token') || null;
+  const [token, setToken] = useState();
 
-  const register = (history, state, setResult, setUserData) =>
-    registerService(history, state, setResult, setUserData);
+  const register = (history, state, setToken, setResult, setUserData) =>
+    registerService(history, state, setToken, setResult, setUserData);
 
-  const login = (history, state, setResult, setUserData) =>
-    loginService(history, state, setResult, setUserData);
+  const login = (history, state, setToken, setResult, setUserData) =>
+    loginService(history, state, setToken, setResult, setUserData);
 
   const logout = (history) => logoutService(history);
 
-  const accessPrivateRoutes = (history, userData, setIsValid) =>
-    accessPrivateRoutesService(history, userData, setIsValid);
+  const accessPrivateRoutes = (history, token, userData, setIsValid) =>
+    accessPrivateRoutesService(history, token, userData, setIsValid);
 
   return (
     <authContext.Provider
-      value={{ token, register, login, logout, accessPrivateRoutes }}>
+      value={{ token, setToken, register, login, logout, accessPrivateRoutes }}>
       {children}
     </authContext.Provider>
   );
