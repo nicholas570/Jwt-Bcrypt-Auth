@@ -1,12 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 
-import axiosInstance from '../../axios/axiosInstance';
-
 import { Container, Row, Col, Form, Button } from 'react-bootstrap/';
 import { ArrowLeft } from 'react-bootstrap-icons';
 
 import { userContext } from '../../context/UserProvider';
+import { authContext } from '../../context/AuthProvider';
 
 import style from '../../css/Register.module.css';
 
@@ -20,6 +19,7 @@ function Register() {
     password: '',
   });
   const { setUserData } = useContext(userContext);
+  const { register } = useContext(authContext);
   const history = useHistory();
 
   const handleChange = (event) => {
@@ -31,39 +31,13 @@ function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     if (form.checkValidity()) {
       setValidated(true);
 
-      axiosInstance(history)
-        .post('api/auth/register', { ...state })
-        .then(({ data }) => {
-          console.log(data);
-          setResult({ error: data.error, message: data.message });
-          setUserData({
-            user: data.data,
-            token: data.token,
-            refreshToken: data.refreshToken,
-          });
-          localStorage.setItem('Token', data.token);
-          localStorage.setItem('User', JSON.stringify(data.data));
-          history.push('/home');
-        })
-        .catch((err) => {
-          if (err.response === undefined) {
-            setResult({
-              message: 'Something went wrong',
-              error: '',
-            });
-          } else {
-            setResult({
-              message: err.response.data.message,
-              error: err.response.data.error,
-            });
-          }
-        });
+      await register(history, state, setResult, setUserData);
 
       setState({
         firstName: '',

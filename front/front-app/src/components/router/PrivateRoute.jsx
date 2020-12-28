@@ -1,21 +1,17 @@
 import { useContext, useEffect, useState } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
-import axiosInstance from '../../axios/axiosInstance';
 
+import { authContext } from '../../context/AuthProvider';
 import { userContext } from '../../context/UserProvider';
 
 function PrivateRoute({ component: Component, layout: Layout, ...rest }) {
   const { userData } = useContext(userContext);
+  const { accessPrivateRoutes } = useContext(authContext);
   const [isValid, setIsValid] = useState();
   const history = useHistory();
 
   useEffect(() => {
-    axiosInstance(history)
-      .post('api/auth/authenticateToken', { token: userData.token })
-      .then(({ data }) => {
-        setIsValid(data);
-      })
-      .catch((err) => setIsValid(err.response));
+    accessPrivateRoutes(history, userData, setIsValid);
   }, []);
 
   return (
