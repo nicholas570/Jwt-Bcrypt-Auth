@@ -107,23 +107,4 @@ AuthController.authenticateToken = (req, res) => {
   });
 };
 
-AuthController.refreshToken = (req, res) => {
-  const { refreshToken } = req.body;
-  if (!refreshToken) {
-    res.status(401).json({ error: 'No token provided' });
-  }
-  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json(err);
-    }
-
-    const token = generateToken(user, process.env.ACCESS_TOKEN_SECRET);
-    const newRefreshToken = generateRefreshToken(
-      user,
-      process.env.REFRESH_TOKEN_SECRET
-    );
-    res.status(200).json({ success: true, token, newRefreshToken });
-  });
-};
-
 module.exports = AuthController;
