@@ -33,7 +33,7 @@ AuthController.register = async (req, res) => {
           error: err2.message,
         });
       }
-      const newUser = records[0];
+      const { password, ...newUser } = records[0];
       return res.status(201).json({
         success: true,
         message: 'Succesfully registered',
@@ -72,10 +72,11 @@ AuthController.login = async (req, res) => {
       });
     }
     if (await bcrypt.compare(req.body.password, result[0].password)) {
+      const { password, ...user } = result[0];
       return res.status(200).json({
         success: true,
         message: 'Succesfully authenticated',
-        data: result[0],
+        data: user,
         error: '',
         token,
         refreshToken,
