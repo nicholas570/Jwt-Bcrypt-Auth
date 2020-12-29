@@ -7,6 +7,7 @@ import Auth from '../views/Auth';
 import Home from '../views/Home';
 import Register from '../views/Register';
 import Login from '../views/Login';
+import PhoneVerify from '../views/PhoneVerify';
 
 function Router() {
   return (
@@ -15,6 +16,7 @@ function Router() {
         <Route exact path='/' component={Auth} />
         <Route path='/register' component={Register} />
         <Route path='/login' component={Login} />
+        <Route path='/phoneVerify' component={PhoneVerify} />
         <PrivateRoute path='/home' component={Home} layout={Layout} />
       </Switch>
     </BrowserRouter>
